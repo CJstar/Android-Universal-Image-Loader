@@ -99,9 +99,10 @@ public final class ImageSizeUtils {
 		switch (viewScaleType) {
 			case FIT_INSIDE:
 				if (powerOf2Scale) {
-					final int halfWidth = srcWidth / 2;
-					final int halfHeight = srcHeight / 2;
-					while ((halfWidth / scale) > targetWidth || (halfHeight / scale) > targetHeight) { // ||
+					final int resMaxSide = srcWidth/targetWidth>srcHeight/targetHeight?srcWidth:srcHeight;
+					final int targetMaxSide = srcWidth/targetWidth>srcHeight/targetHeight?targetWidth:targetHeight;
+
+					while(resMaxSide/scale>targetMaxSide){
 						scale *= 2;
 					}
 				} else {
@@ -110,11 +111,13 @@ public final class ImageSizeUtils {
 				break;
 			case CROP:
 				if (powerOf2Scale) {
-					final int halfWidth = srcWidth / 2;
-					final int halfHeight = srcHeight / 2;
-					while ((halfWidth / scale) > targetWidth && (halfHeight / scale) > targetHeight) { // &&
+					final int resMinSide = srcWidth/targetWidth<srcHeight/targetHeight?srcWidth:srcHeight;
+					final int targetMinSide = srcWidth/targetWidth<srcHeight/targetHeight?targetWidth:targetHeight;
+
+					while(resMinSide/scale>targetMinSide){
 						scale *= 2;
 					}
+
 				} else {
 					scale = Math.min(srcWidth / targetWidth, srcHeight / targetHeight); // min
 				}
